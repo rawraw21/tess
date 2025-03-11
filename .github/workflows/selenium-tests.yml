@@ -1,0 +1,28 @@
+name: Selenium Tests
+
+on: [push, pull_request]
+
+jobs:
+  selenium-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          pip install selenium
+          pip install -r requirements.txt || true
+
+      - name: Setup Chrome for Selenium
+        run: |
+          sudo apt update
+          sudo apt install -y google-chrome-stable
+
+      - name: Run Selenium Tests
+        run: python test_selenium.py
